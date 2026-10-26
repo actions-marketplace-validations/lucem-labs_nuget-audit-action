@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "parameters": "--vulnerable --include-transitive",
+  "sources": [
+    "https://api.nuget.org/v3/index.json"
+  ],
+  "projects": [
+    {
+      "path": "C:/git/nuget-audit-action/test/fixtures/sample/App/App.csproj",
+      "frameworks": [
+        {
+          "framework": "net10.0",
+          "topLevelPackages": [
+            {
+              "id": "Newtonsoft.Json",
+              "requestedVersion": "12.0.1",
+              "resolvedVersion": "12.0.1",
+              "vulnerabilities": [
+                {
+                  "severity": "High",
+                  "advisoryurl": "https://github.com/advisories/GHSA-5crp-9r3c-p9vr"
+                }
+              ]
+            }
+          ],
+          "transitivePackages": [
+            {
+              "id": "Azure.Identity",
+              "resolvedVersion": "1.10.0",
+              "vulnerabilities": [
+                {
+                  "severity": "Moderate",
+                  "advisoryurl": "https://github.com/advisories/GHSA-m5vv-6r4h-3vj9"
+                },
+                {
+                  "severity": "Moderate",
+                  "advisoryurl": "https://github.com/advisories/GHSA-wvxc-855f-jvrv"
+                },
+                {
+                  "severity": "High",
+                  "advisoryurl": "https://github.com/advisories/GHSA-5mfx-4wcx-rv27"
+                }
+              ]
+            },
+            {
+              "id": "Microsoft.Extensions.Caching.Memory",
+              "resolvedVersion": "8.0.0",
+              "vulnerabilities": [
+                {
+                  "severity": "High",
+                  "advisoryurl": "https://github.com/advisories/GHSA-qj66-m88j-hmgj"
+                }
+              ]
+            },
+            {
+              "id": "Microsoft.Identity.Client",
+              "resolvedVersion": "4.54.1",
+              "vulnerabilities": [
+                {
+                  "severity": "Low",
+                  "advisoryurl": "https://github.com/advisories/GHSA-x674-v45j-fwxw"
+                },
+                {
+                  "severity": "Moderate",
+                  "advisoryurl": "https://github.com/advisories/GHSA-m5vv-6r4h-3vj9"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:/git/nuget-audit-action/test/fixtures/sample/Lib/Lib.csproj",
+      "frameworks": [
+        {
+          "framework": "net10.0",
+          "topLevelPackages": [
+            {
+              "id": "Azure.Identity",
+              "requestedVersion": "1.10.0",
+              "resolvedVersion": "1.10.0",
+              "vulnerabilities": [
+                {
+                  "severity": "Moderate",
+                  "advisoryurl": "https://github.com/advisories/GHSA-m5vv-6r4h-3vj9"
+                },
+                {
+                  "severity": "Moderate",
+                  "advisoryurl": "https://github.com/advisories/GHSA-wvxc-855f-jvrv"
+                },
+                {
+                  "severity": "High",
+                  "advisoryurl": "https://github.com/advisories/GHSA-5mfx-4wcx-rv27"
+                }
+              ]
+            }
+          ],
+          "transitivePackages": [
+            {
+              "id": "Microsoft.Extensions.Caching.Memory",
+              "resolvedVersion": "8.0.0",
+              "vulnerabilities": [
+                {
+                  "severity": "High",
+                  "advisoryurl": "https://github.com/advisories/GHSA-qj66-m88j-hmgj"
+                }
+              ]
+            },
+            {
+              "id": "Microsoft.Identity.Client",
+              "resolvedVersion": "4.54.1",
+              "vulnerabilities": [
+                {
+                  "severity": "Low",
+                  "advisoryurl": "https://github.com/advisories/GHSA-x674-v45j-fwxw"
+                },
+                {
+                  "severity": "Moderate",
+                  "advisoryurl": "https://github.com/advisories/GHSA-m5vv-6r4h-3vj9"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

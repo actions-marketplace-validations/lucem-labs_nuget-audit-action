@@ -1,0 +1,82 @@
+name: NuGet vulnerability audit
+description: Scan .NET projects for vulnerable NuGet packages with dotnet list package --vulnerable, report them in the job summary and allow time-boxed suppressions.
+author: lucem-labs
+branding:
+  icon: shield
+  color: purple
+
+inputs:
+  path:
+    description: Solution, project or directory to scan, relative to the workspace. A directory must contain exactly one solution or project file.
+    required: false
+    default: .
+  suppressions-file:
+    description: JSON file with time-boxed suppressions, relative to the workspace. A missing file means no suppressions.
+    required: false
+    default: .github/nuget-audit-suppressions.json
+  fail-severity:
+    description: Lowest severity that fails the step (low, moderate, high or critical). Findings below it are reported as warnings.
+    required: false
+    default: low
+  fail-on-vulnerable:
+    description: Fail the step when unsuppressed findings at or above fail-severity exist. Set to false to only report.
+    required: false
+    default: "true"
+  include-transitive:
+    description: Include transitive packages in the scan.
+    required: false
+    default: "true"
+  restore:
+    description: Run dotnet restore (with NuGetAudit disabled) before the scan. Disable when an earlier step already restored.
+    required: false
+    default: "true"
+  max-suppression-days:
+    description: Reject suppressions whose until date is more than this many days in the future. 0 disables the limit.
+    required: false
+    default: "90"
+  list-arguments:
+    description: Extra arguments for dotnet list package, for example --source or --config.
+    required: false
+    default: ""
+
+outputs:
+  vulnerable-count:
+    description: Number of unsuppressed findings, including those below fail-severity.
+    value: ${{ steps.audit.outputs.vulnerable-count }}
+  failing-count:
+    description: Number of unsuppressed findings at or above fail-severity.
+    value: ${{ steps.audit.outputs.failing-count }}
+  suppressed-count:
+    description: Number of findings silenced by an active suppression.
+    value: ${{ steps.audit.outputs.suppressed-count }}
+  report-path:
+    description: Path to the Markdown report (same content as the job summary).
+    value: ${{ steps.audit.outputs.report-path }}
+  findings-path:
+    description: Path to a JSON file with every finding and its status.
+    value: ${{ steps.audit.outputs.findings-path }}
+
+runs:
+  using: composite
+  steps:
+    - id: audit
+      shell: pwsh
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_SUPPRESSIONS_FILE: ${{ inputs.suppressions-file }}
+        INPUT_FAIL_SEVERITY: ${{ inputs.fail-severity }}
+        INPUT_FAIL_ON_VULNERABLE: ${{ inputs.fail-on-vulnerable }}
+        INPUT_INCLUDE_TRANSITIVE: ${{ inputs.include-transitive }}
+        INPUT_RESTORE: ${{ inputs.restore }}
+        INPUT_MAX_SUPPRESSION_DAYS: ${{ inputs.max-suppression-days }}
+        INPUT_LIST_ARGUMENTS: ${{ inputs.list-arguments }}
+      run: >
+        & "$env:GITHUB_ACTION_PATH/src/Invoke-NuGetAudit.ps1"
+        -Target $env:INPUT_PATH
+        -SuppressionFile $env:INPUT_SUPPRESSIONS_FILE
+        -FailSeverity $env:INPUT_FAIL_SEVERITY
+        -FailOnVulnerable $env:INPUT_FAIL_ON_VULNERABLE
+        -IncludeTransitive $env:INPUT_INCLUDE_TRANSITIVE
+        -Restore $env:INPUT_RESTORE
+        -MaxSuppressionDays $env:INPUT_MAX_SUPPRESSION_DAYS
+        -ListArguments $env:INPUT_LIST_ARGUMENTS

@@ -1,0 +1,15 @@
+{
+  "suppressions": [
+    {
+      "advisory": "GHSA-qj66-m88j-hmgj",
+      "package": "Microsoft.Extensions.Caching.Memory",
+      "until": "2099-12-31",
+      "reason": "Self-test fixture: proves that a suppressed finding does not fail the scan."
+    },
+    {
+      "advisory": "GHSA-0000-0000-0000",
+      "until": "2099-12-31",
+      "reason": "Self-test fixture: proves that unused suppressions are reported."
+    }
+  ]
+}
