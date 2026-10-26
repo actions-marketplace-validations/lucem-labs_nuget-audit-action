@@ -1,5 +1,5 @@
 name: NuGet vulnerability audit
-description: Scan .NET projects for vulnerable NuGet packages with dotnet list package --vulnerable, report them in the job summary and allow time-boxed suppressions.
+description: Scan .NET solutions for vulnerable NuGet packages, report them per project and allow time-boxed suppressions.
 author: lucem-labs
 branding:
   icon: shield
