@@ -77,6 +77,22 @@ jobs:
           if ($errors) { $errors | ForEach-Object { Write-Host "::error::$_" }; exit 1 }
           Write-Host 'Self-test passed.'
 
+      - name: Scan fixture that treats warnings as errors
+        id: warnings-as-errors
+        uses: ./
+        with:
+          path: test/fixtures/warnings-as-errors/WarningsAsErrors.csproj
+          suppressions-file: test/fixtures/warnings-as-errors/nuget-audit-suppressions.json
+          fail-on-vulnerable: false
+
+      - name: Check warnings-as-errors findings
+        shell: pwsh
+        env:
+          FINDINGS_PATH: ${{ steps.warnings-as-errors.outputs.findings-path }}
+        run: |
+          $findings = Get-Content -Raw $env:FINDINGS_PATH | ConvertFrom-Json
+          if (-not ($findings | Where-Object { $_.Package -eq 'Newtonsoft.Json' })) { Write-Host '::error::Expected Newtonsoft.Json in the warnings-as-errors fixture findings.'; exit 1 }
+
   invalid-suppressions:
     name: Invalid suppressions fail
     runs-on: ubuntu-latest

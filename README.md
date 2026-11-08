@@ -121,7 +121,7 @@ NuGet has its own [`<NuGetAuditSuppress>`](https://learn.microsoft.com/en-us/nug
 
 ## Relation to restore-time NuGet audit
 
-Since .NET 8, `dotnet restore` reports vulnerable packages as `NU1901`–`NU1904` warnings. This action restores with `-p:NuGetAudit=false`, so a project that treats those warnings as errors does not fail the restore before the scan can report anything. Your normal build keeps its own NuGet audit settings.
+Since .NET 8, `dotnet restore` reports vulnerable packages as `NU1901`–`NU1904` warnings. This action turns NuGet audit off for its own restore and for the restore that `dotnet list package` runs, so a project that treats those warnings as errors does not fail the restore before the scan can report anything. A project that combines warnings as errors with an explicit `<NuGetAudit>true</NuGetAudit>` is not covered, because a value set in the project overrides the environment variable used for the `dotnet list package` restore. Your normal build keeps its own NuGet audit settings.
 
 ## Development
 
