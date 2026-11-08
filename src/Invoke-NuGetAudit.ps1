@@ -47,6 +47,7 @@ if (Test-Truthy $IncludeTransitive) { $listArgs += '--include-transitive' }
 if ($ListArguments.Trim()) { $listArgs += $ListArguments.Trim() -split '\s+' }
 
 Write-Host "::group::dotnet $($listArgs -join ' ')"
+$env:NuGetAudit = 'false'
 $listOutput = & dotnet @listArgs
 $listExit = $LASTEXITCODE
 $json = ($listOutput | ForEach-Object { "$_" }) -join "`n"
